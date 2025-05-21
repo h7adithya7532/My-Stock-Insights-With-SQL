@@ -1,26 +1,18 @@
 # My-Stock-Insights-With-SQL
 
-Here’s a well-structured and professional `README.md` file for your **Stock Portfolio Analyzer** SQL project. You can copy this into your GitHub repo directly:
-
----
-
-````markdown
 # 📈 Stock Portfolio Analyzer
 
-A SQL Server-based data analytics project that provides insights into stock investments using ROI (Return on Investment), total profits/losses, and investment patterns. This project is built using real transaction-level portfolio data and is designed to showcase analytical skills using SQL.
 
----
+A SQL Server-based data analytics project that provides insights into stock investments using ROI (Return on Investment), total profits/losses, and investment patterns. This project is built using real transaction-level portfolio data and is designed to showcase analytical skills using SQL.\
 
-## 🧠 Project Objectives
+🧠 Project Objectives
 
 - Analyze stock-wise performance based on ROI
 - Identify which stocks generated the most profit or loss
 - Determine where the highest investments were made
 - Present insights that can help in smarter investment decisions
 
----
-
-## 📂 Dataset Description
+📂 Dataset Description
 
 **File Used:** `Stocks_PnL_Report_2024-04-01_to_2025-05-20.xlsx`
 
@@ -36,46 +28,38 @@ A SQL Server-based data analytics project that provides insights into stock inve
 | sell_avg_price    | Average sell price per share         |
 | trade_date        | Date of transaction                  |
 
----
 
-## 🏗️ Project Setup (SQL Server 2022 Express)
+🏗️ Project Setup (SQL Server 2022 Express)
 
-### 1. Create Database
+1. Create Database
 
-```sql
 CREATE DATABASE StockAnalyticsDB;
-GO
 USE StockAnalyticsDB;
-````
 
-### 2. Import Excel/CSV to SQL Server
+2. Import Excel/CSV to SQL Server
 
 * Open SQL Server Management Studio (SSMS)
 * Right-click `StockAnalyticsDB` → Tasks → Import Flat File
 * Select your `.csv` file and complete the wizard
 
-### 3. Verify Table
+3. Verify Table
 
-```sql
-SELECT TOP 10 * FROM importstockdata;
-```
+SELECT* 
+FROM importstockdata;
 
----
 
-## 📊 Key SQL Queries
+📊 Key SQL Queries
 
-### 1. 🔁 Total Investment and PnL Per Stock
+1. 🔁 Total Investment and PnL Per Stock
 
-```sql
+
 SELECT stock_name,
        SUM(CAST(buy_value AS FLOAT)) AS Total_Invested,
        SUM(CAST(realized_pnl AS FLOAT)) AS Total_Realized_PnL
 FROM importstockdata
 GROUP BY stock_name
 ORDER BY Total_Invested DESC;
-```
 
----
 
 ### 2. 📈 ROI (Return on Investment) Per Stock
 
