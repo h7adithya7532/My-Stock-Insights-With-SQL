@@ -9,6 +9,7 @@ Create Table importstockdata(
 	realized_pnl FLOAT,
 	realized_pnl_percentage FLOAT
 );
+
 --Imported the data from CSV file of the stock portfolio of the Stock p&l from April-1-2025 to May-20-2025
 --Right click on the StockAnalysisDB
 --Select >Task>Import Flat file
@@ -27,30 +28,35 @@ Delete From importstockdata
 where id=31;
 
 --Total Investment
-SELECT SUM(buy_value) AS Total_Investment
+SELECT SUM(CAST(buy_value AS FLOAT)) AS TotalInvestment
 FROM importstockdata;
+
 
 --Total Sell Value
-SELECT SUM(sell_value) AS Total_sell_value
+SELECT SUM(CAST(sell_value AS FLOAT)) AS TotalSellValue
 FROM importstockdata;
 
+
 --Net Realized Profit&Loss
-SELECT SUM(realized_pnl) AS NetProfitLoss
+SELECT SUM(CAST(realized_pnl AS FLOAT)) AS NetProfitLoss
 FROM importstockdata;
+
 
 --Top5 profit making stocks
 SELECT TOP 5 stock_name,
-SUM(realized_pnl) AS Profit
+SUM(CAST(realized_pnl AS FLOAT)) AS Profit
 FROM importstockdata
 GROUP BY stock_name
 ORDER BY Profit DESC;
 
+
 --Worst 5 Performing Stocks
 SELECT TOP 5 stock_name,
-SUM(realized_pnl) AS Loss
+SUM(CAST(realized_pnl AS FLOAT)) AS Loss
 FROM importstockdata
 GROUP BY stock_name
 ORDER BY Loss ASC;
+
 
 --Calculating ROI(Return On Investment)
 SELECT stock_name,
@@ -58,12 +64,3 @@ SELECT stock_name,
 FROM importstockdata
 GROUP BY stock_name
 ORDER BY ROI_Percentage DESC;
-
-
-
-
-
-
-
-
-
