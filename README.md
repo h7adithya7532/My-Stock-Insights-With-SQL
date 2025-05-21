@@ -1,129 +1,132 @@
-# My-Stock-Insights-With-SQL
+### Stock Portfolio Analysis Project
+## Overview
+This project analyzes stock portfolio data from April 1, 2025, to May 20, 2025. It imports trading data from a CSV file into a SQL database and performs various analyses to track investment performance.
+Project Structure
 
-# 📈 Stock Portfolio Analyzer
+project_stock.sql: Contains all SQL queries for database setup and analysis
+CSV data file (imported manually): Contains raw stock trading data
+
+## Features
+
+Import stock data from CSV files
+Track realized profit and loss
+Identify top performing and underperforming stocks
+Calculate return on investment (ROI)
+Analyze total investment and sell value
+
+## Database Setup
+The project uses a SQL database with a main table called importstockdata with the following schema:
+
+id: Auto-incrementing primary key
+
+stock_name: Name of the stock
+
+isin: International Securities Identification Number
+
+quantity: Number of shares traded
+
+avg_buy_price: Average buying price per share
+
+buy_value: Total buy value
+
+avg_sell_price: Average selling price per share
+
+sell_value: Total sell value
+
+realized_pnl: Realized profit and loss
+
+realized_pnl_percentage: Profit and loss as a percentage
+
+## Getting Started
+
+Create a new database in SQL Server called StockAnalysisDB
+Run the SQL commands in project_stock.sql to set up the table structure
+Import your CSV data file:
+
+Right-click on the StockAnalysisDB database
+Select "Tasks" > "Import Flat File"
+Select your CSV file containing stock data
+Follow the import wizard to map columns to the table structure
 
 
-A SQL Server-based data analytics project that provides insights into stock investments using ROI (Return on Investment), total profits/losses, and investment patterns. This project is built using real transaction-level portfolio data and is designed to showcase analytical skills using SQL.\
 
-🧠 Project Objectives
+## Analysis Queries
+The project includes several analytical queries:
 
-- Analyze stock-wise performance based on ROI
-- Identify which stocks generated the most profit or loss
-- Determine where the highest investments were made
-- Present insights that can help in smarter investment decisions
+## 1.Total Investment
+SELECT SUM(CAST(buy_value AS FLOAT)) AS TotalInvestment
 
-📂 Dataset Description
-
-**File Used:** `Stocks_PnL_Report_2024-04-01_to_2025-05-20.xlsx`
-
-**Imported Table:** `importstockdata`
-
-| Column Name       | Description                          |
-|-------------------|--------------------------------------|
-| stock_name        | Name of the stock                    |
-| buy_value         | Total amount spent on purchases      |
-| realized_pnl      | Realized Profit or Loss              |
-| qty               | Quantity traded                      |
-| buy_avg_price     | Average buy price per share          |
-| sell_avg_price    | Average sell price per share         |
-| trade_date        | Date of transaction                  |
-
-
-🏗️ Project Setup (SQL Server 2022 Express)
-
-1. Create Database
-
-CREATE DATABASE StockAnalyticsDB;
-USE StockAnalyticsDB;
-
-2. Import Excel/CSV to SQL Server
-
-* Open SQL Server Management Studio (SSMS)
-* Right-click `StockAnalyticsDB` → Tasks → Import Flat File
-* Select your `.csv` file and complete the wizard
-
-3. Verify Table
-
-SELECT* 
 FROM importstockdata;
 
+## 2.Total Sell Value
+SELECT SUM(CAST(sell_value AS FLOAT)) AS TotalSellValue
 
-📊 Key SQL Queries
+FROM importstockdata;
 
-1. 🔁 Total Investment and PnL Per Stock
+## 3.Net Realized Profit & Loss
+SELECT SUM(CAST(realized_pnl AS FLOAT)) AS NetProfitLoss
 
+FROM importstockdata;
 
-SELECT stock_name,
-       SUM(CAST(buy_value AS FLOAT)) AS Total_Invested,
-       SUM(CAST(realized_pnl AS FLOAT)) AS Total_Realized_PnL
+## 4.Top 5 Profit-Making Stocks
+SELECT TOP 5 stock_name,
+
+SUM(CAST(realized_pnl AS FLOAT)) AS Profit
+
 FROM importstockdata
+
 GROUP BY stock_name
-ORDER BY Total_Invested DESC;
 
+ORDER BY Profit DESC;
 
-### 2. 📈 ROI (Return on Investment) Per Stock
+## 5.Worst 5 Performing Stocks
+sqlSELECT TOP 5 stock_name,
 
-```sql
-SELECT stock_name,
-       CAST(SUM(CAST(realized_pnl AS FLOAT)) / NULLIF(SUM(CAST(buy_value AS FLOAT)), 0) * 100 AS DECIMAL(10, 2)) AS ROI_Percentage
+SUM(CAST(realized_pnl AS FLOAT)) AS Loss
+
 FROM importstockdata
+
 GROUP BY stock_name
+
+ORDER BY Loss ASC;
+
+## 6.Return on Investment (ROI)
+SELECT stock_name,
+
+CAST(SUM(CAST(realized_pnl AS FLOAT)) / NULLIF(SUM(CAST(buy_value AS FLOAT)), 0) * 100 AS DECIMAL(10, 2)) AS ROI_Percentage
+	   
+FROM importstockdata
+
+GROUP BY stock_name
+
 ORDER BY ROI_Percentage DESC;
-```
 
----
 
-### 3. 📉 Loss-Making Stocks
 
-```sql
-SELECT stock_name,
-       SUM(CAST(realized_pnl AS FLOAT)) AS Total_Loss
-FROM importstockdata
-GROUP BY stock_name
-HAVING SUM(CAST(realized_pnl AS FLOAT)) < 0
-ORDER BY Total_Loss ASC;
-```
+## Future Improvements
 
----
+Add visualization components using Power BI
 
-### 4. 📅 Monthly Performance Overview
+Include unrealized profit/loss calculations
 
-```sql
-SELECT FORMAT(CAST(trade_date AS DATE), 'yyyy-MM') AS Month,
-       SUM(CAST(realized_pnl AS FLOAT)) AS Monthly_Profit
-FROM importstockdata
-GROUP BY FORMAT(CAST(trade_date AS DATE), 'yyyy-MM')
-ORDER BY Month;
-```
+Add historical trend analysis
 
----
+Implement sector-based analysis
 
-## 🔍 Insights Extracted
+Create automated reporting functionality
 
-* **Top Performing Stocks**: Based on highest ROI
-* **Most Invested Stocks**: Where the largest capital was allocated
-* **Profit vs. Loss Distribution**: Easy to see loss-making vs. profitable stocks
-* **Monthly Trends**: Investment performance over time
+# Notes
+The last row of imported data is automatically deleted as it contains totals
 
----
+All monetary values are handled as FLOAT data types for accurate calculations
 
-## 💡 Future Enhancements
+# Requirements
+SQL Server (any recent version)
 
-* Add Power BI Dashboard to visualize KPIs
-* Use Python (Pandas + Matplotlib/Seaborn) for more advanced analysis
-* Add live stock price integration via API
-* Automate daily PnL updates using SQL Jobs or ETL
+CSV file with stock trading data
 
----
+## Author
+Adithya Donthula
 
-## 🧑‍💻 Author
-
-**Donthula Adithya**
-B.Tech Data Science, Vignana Bharathi Institute of Technology
-[GitHub Profile](https://github.com/) *(insert your GitHub profile URL)*
-
----
-
-## 📜 License
-
-This project is for academic and portfolio use. Feel free to fork and enhance!
+Last Updated
+May 21, 2025
