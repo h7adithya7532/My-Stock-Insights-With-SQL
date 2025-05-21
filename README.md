@@ -58,15 +58,23 @@ SELECT SUM(CAST(buy_value AS FLOAT)) AS TotalInvestment
 
 FROM importstockdata;
 
+<img width="172" alt="image" src="https://github.com/user-attachments/assets/2f0139f3-47ab-449b-b63a-1369dc30212f" />
+
 ## 2.Total Sell Value
 SELECT SUM(CAST(sell_value AS FLOAT)) AS TotalSellValue
 
 FROM importstockdata;
 
+<img width="172" alt="image" src="https://github.com/user-attachments/assets/66e089d4-3dc1-4ff6-a3c7-b2bec897679d" />
+
+
 ## 3.Net Realized Profit & Loss
 SELECT SUM(CAST(realized_pnl AS FLOAT)) AS NetProfitLoss
 
 FROM importstockdata;
+
+<img width="172" alt="image" src="https://github.com/user-attachments/assets/aca343ea-caed-4e0e-99b4-4a0aab5dc580" />
+
 
 ## 4.Top 5 Profit-Making Stocks
 SELECT TOP 5 stock_name,
@@ -79,6 +87,9 @@ GROUP BY stock_name
 
 ORDER BY Profit DESC;
 
+<img width="297" alt="image" src="https://github.com/user-attachments/assets/f4231055-5d2b-41bb-84c4-60c1345ecaae" />
+
+
 ## 5.Worst 5 Performing Stocks
 sqlSELECT TOP 5 stock_name,
 
@@ -90,6 +101,9 @@ GROUP BY stock_name
 
 ORDER BY Loss ASC;
 
+<img width="292" alt="image" src="https://github.com/user-attachments/assets/96a51526-4c0d-46bd-b896-8d79ab29f639" />
+
+
 ## 6.Return on Investment (ROI)
 SELECT stock_name,
 
@@ -100,6 +114,9 @@ FROM importstockdata
 GROUP BY stock_name
 
 ORDER BY ROI_Percentage DESC;
+
+<img width="281" alt="image" src="https://github.com/user-attachments/assets/f487c526-d223-47a9-a308-b431a4c8810c" />
+
 
 
 
